@@ -8,6 +8,10 @@ namespace SimpleSurveySystem.Entities
 {
     public class UserSurvey
     {
-        prop
+        public User User { get; set; }
+        public int UserId { get; set; }
+        public Survey Survey { get; set; }
+        public int SurveyId { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

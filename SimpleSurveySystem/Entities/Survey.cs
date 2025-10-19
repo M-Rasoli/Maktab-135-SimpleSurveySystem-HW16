@@ -11,6 +11,7 @@ namespace SimpleSurveySystem.Entities
         public int Id { get; set; }
         public string Title { get; set; }
         public List<Question> Questions { get; set; } = new List<Question>();
-        public TYPE Type { get; set; }
+        public List<UserSurvey> UserSurveys { get; set; } = new();
+        public DateTime CreatedAt { get; set; } = new DateTime();
     }
 }

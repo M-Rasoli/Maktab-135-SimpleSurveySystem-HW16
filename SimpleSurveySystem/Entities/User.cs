@@ -13,8 +13,9 @@ namespace SimpleSurveySystem.Entities
         public string UsernName { get; set; }
         public string Password { get; set; }
         public RoleEnum Role { get; set; }
-        public List<Survey> Surveys { get; set; } = new List<Survey>();
+        public List<UserSurvey> UserSurveys { get; set; } = new List<UserSurvey>();
         public List<Vote> Votes { get; set; } = new List<Vote>();
+        public DateTime CreatedAt { get; set; } = new DateTime();
 
         //void SetPassword(string password)
         //{
