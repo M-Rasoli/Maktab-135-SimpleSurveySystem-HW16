@@ -15,6 +15,6 @@ namespace SimpleSurveySystem.Entities
         public int QuestionId { get; set; }
         public List<Vote> Votes { get; set; } = new List<Vote>();
         public DateTime CreatedAt { get; set; } = new DateTime();
-
+        
     }
 }

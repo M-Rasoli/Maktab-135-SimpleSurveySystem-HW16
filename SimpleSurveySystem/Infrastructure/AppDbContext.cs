@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SimpleSurveySystem.Entities;
 
 namespace SimpleSurveySystem.Infrastructure
 {
@@ -18,10 +19,16 @@ namespace SimpleSurveySystem.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<UserSurvey> UserSurveyrs { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Options> Options { get; set; }
+        public DbSet<Vote> Votes { get; set; }
     }
 }

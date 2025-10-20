@@ -10,7 +10,7 @@ namespace SimpleSurveySystem.Entities
     public class User
     {
         public int Id { get; set; }
-        public string UsernName { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
         public RoleEnum Role { get; set; }
         public List<UserSurvey> UserSurveys { get; set; } = new List<UserSurvey>();

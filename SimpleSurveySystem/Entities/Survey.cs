@@ -13,5 +13,6 @@ namespace SimpleSurveySystem.Entities
         public List<Question> Questions { get; set; } = new List<Question>();
         public List<UserSurvey> UserSurveys { get; set; } = new();
         public DateTime CreatedAt { get; set; } = new DateTime();
+        public List<Vote> Votes { get; set; } = new List<Vote>();
     }
 }
