@@ -19,5 +19,30 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
 
             return newQuestion.Id;
         }
+
+        public int GetFirstQuestionOfSurvey(int surveyId)
+        {
+            return _context.Questions.AsNoTracking().FirstOrDefault(q => q.SurveyId == surveyId).Id;
+        }
+
+        public int GetLastQuestionOfSurvey(int surveyId)
+        {
+            return _context.Questions.AsNoTracking().OrderByDescending(q => q.Id).FirstOrDefault(q => q.SurveyId == surveyId).Id;
+        }
+
+        public List<ShowSurveyQuestionAndOptionsDto> GetOptionsOfQuestion(GetOptionsForQuestionWithPaginationDto getOptionsForQuestion)
+        {
+            return _context.Options.Where(o => o.QuestionId == getOptionsForQuestion.QuestionId)
+                .Select(x => new ShowSurveyQuestionAndOptionsDto
+                {
+                    OptionNumber = x.OptionNumber,
+                    OptionText = x.Text
+                }).ToList();
+        }
+
+        public string GetQuestionTitle(int questionId)
+        {
+            return _context.Questions.FirstOrDefault(q => q.Id == questionId).QuestionTitle;
+        }
     }
 }

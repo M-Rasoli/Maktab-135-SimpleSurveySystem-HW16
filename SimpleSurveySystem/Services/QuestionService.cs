@@ -41,5 +41,25 @@ namespace SimpleSurveySystem.Services
             return _questionRepository.AddNewQuestion(question);
 
         }
+
+        public int GetFirstQuestionIdOfSurvey(int questionId)
+        {
+            return _questionRepository.GetFirstQuestionOfSurvey(questionId);
+        }
+
+        public int GetLastQuestionIdOfSurvey(int questionId)
+        {
+            return _questionRepository.GetLastQuestionOfSurvey(questionId);
+        }
+
+        public List<ShowSurveyQuestionAndOptionsDto> GetOptionsOfQuestion(GetOptionsForQuestionWithPaginationDto getOptionsForQuestion)
+        {
+            return _questionRepository.GetOptionsOfQuestion(getOptionsForQuestion);
+        }
+
+        public string GetQuestionTitle(int questionId)
+        {
+            return _questionRepository.GetQuestionTitle(questionId);
+        }
     }
 }

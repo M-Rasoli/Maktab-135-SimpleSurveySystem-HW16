@@ -13,6 +13,7 @@ namespace SimpleSurveySystem.Contracts.RepositoryContracts
         int CreateNewSurvey(CreateNewSurveyDto newSurvey);
         bool SurveyExist(int surveyId);
         List<ShowSurveysListDto> GetSurveysList();
+        List<ShowSurveysListDto> GetSurveysListForNormalUsers();
         List<ShowSurveysDetailWithIdDto> GetSurveyWithId(int surveyId);
         List<ShowParticipatingUsersDto> GetParticipatingUsersList(int surveyId);
 

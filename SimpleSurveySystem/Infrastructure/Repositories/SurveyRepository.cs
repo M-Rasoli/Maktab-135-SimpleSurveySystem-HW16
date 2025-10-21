@@ -62,5 +62,17 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
                     UserName = x.User.Username
                 }).ToList();
         }
+
+        public List<ShowSurveysListDto> GetSurveysListForNormalUsers()
+        {
+            return _context.Surveys.AsNoTracking().Where(s => s.Questions.Count > 0)
+                .Select(x => new ShowSurveysListDto()
+            {
+                SurveyId = x.Id,
+                Title = x.Title,
+                NumberOfQuestions = x.Questions.Count,
+                TotalNumberOfVotes = x.Votes.Count
+            }).ToList();
+        }
     }
 }

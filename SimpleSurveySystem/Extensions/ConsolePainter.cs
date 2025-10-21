@@ -49,7 +49,7 @@ namespace SimpleSurveySystem.Extensions
             var firstNonNull = itemList.First();
             var itemType = firstNonNull.GetType();
 
-            WriteLine($"Class: {itemType.Name}");
+            //WriteLine($"Class: {itemType.Name}");
 
             if (IsSimpleType(itemType))
             {

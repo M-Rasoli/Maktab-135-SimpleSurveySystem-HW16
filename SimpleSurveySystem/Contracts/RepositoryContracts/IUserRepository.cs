@@ -13,5 +13,6 @@ namespace SimpleSurveySystem.Contracts.RepositoryContracts
         User GetUserByUserName(string userName);
         string AddNewUser(CreateUserDto newUser);
         bool CheckIfUserNameAlreadyExist(string userName);
+        bool CheckIfUserAlreadyParticipateInTheSurvey(int surveyId, int userId);
     }
 }

@@ -43,5 +43,10 @@ namespace SimpleSurveySystem.Services
         {
             return surveyRepository.SurveyExist(surveyId);
         }
+
+        public List<ShowSurveysListDto> GetSurveysListForNormalUsers()
+        {
+            return surveyRepository.GetSurveysListForNormalUsers();
+        }
     }
 }

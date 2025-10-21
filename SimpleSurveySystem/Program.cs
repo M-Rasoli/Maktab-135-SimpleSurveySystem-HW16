@@ -1,5 +1,4 @@
-﻿
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
 using SimpleSurveySystem;
 using SimpleSurveySystem.Contracts.RepositoryContracts;
 using SimpleSurveySystem.Contracts.ServiceContracts;
@@ -21,6 +20,7 @@ IQuestionRepository questionRepository = new QuestionRepository(appDbContext);
 IAuthenticationService authenticationService = new AuthenticationService(userRepository);
 IQuestionService questionService = new QuestionService(questionRepository, surveyRepository);
 ISurveyService surveyService = new SurveyService(surveyRepository);
+IUserService userService = new UserService(userRepository);
 
 
 
@@ -248,6 +248,11 @@ void AdminMenu()
                 string inPutChoice = Console.ReadLine()!;
                 if (inPutChoice == "1")
                 {
+                    var articipatingUsersList = surveyService.GetParticipatingUsersList(inPutSurveyId);
+                    ConsolePainter.WriteTable(articipatingUsersList);
+                    Console.WriteLine("Press Any Key For Back");
+                    Console.ReadKey();
+                    break;
 
                 }
                 Console.ReadKey();
@@ -261,7 +266,83 @@ void AdminMenu()
 
 void UserMenu()
 {
+    do
+    {
+        Console.Clear();
 
+        var choice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[mediumspringgreen]🔰 Select an action:[/]")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Move up and down to reveal more actions)[/]")
+                .AddChoices(new[]
+                {
+                    "View Surveys",
+                    "Log Out"
+                }));
+        switch (choice)
+        {
+            case "View Surveys":
+                Console.Clear();
+                var surveys = surveyService.GetSurveysListForNormalUsers();
+                ConsolePainter.WriteTable(surveys);
+                Console.Write("Enter the survey ID to participate in : (00-for back)");
+                string inputStrSurveyId = Console.ReadLine()!;
+                if (inputStrSurveyId == "00")
+                {
+                    break;
+                }
+                bool checkInPutSurveyID = int.TryParse(inputStrSurveyId, out int inPutSurveyId);
+
+                if (!surveyService.SurveyExist(inPutSurveyId))
+                {
+                    Console.WriteLine("Invalid Survey ID !");
+                    Console.ReadKey();
+                    break;
+                }
+
+                if (userService.CheckIfUserAlreadyParticipateInTheSurvey(inPutSurveyId, Session.LoggedInUser.Id))
+                {
+                    Console.WriteLine("You have already participated in this survey.");
+                    Console.ReadKey();
+                    break;
+                }
+
+                var firstQuestionId = questionService.GetFirstQuestionIdOfSurvey(inPutSurveyId);
+                int count = firstQuestionId;
+                var lastQuestionId = questionService.GetLastQuestionIdOfSurvey(inPutSurveyId);
+                string questionTitle;
+                do
+                {
+                    Console.Clear();
+                    questionTitle = questionService.GetQuestionTitle(count);
+                    Console.WriteLine(questionTitle);
+                    GetOptionsForQuestionWithPaginationDto getOptions = new GetOptionsForQuestionWithPaginationDto()
+                    {
+                        QuestionId = count
+                    };
+                    var options = questionService.GetOptionsOfQuestion(getOptions);
+                    ConsolePainter.WriteTable(options);
+                    Console.WriteLine("Enter (n) for next page");
+                    string inNext = Console.ReadLine()!;
+                    if (inNext == "n")
+                    {
+                        count++;
+                    }
+
+                    if (count > lastQuestionId)
+                    {
+                        Console.WriteLine("tnx for ur work");
+                        Console.ReadKey();
+                        break;
+                    }
+                } while (true);
+
+                break;
+            case "Log Out":
+                return;
+        }
+    } while (true);
 }
 
 void Register()

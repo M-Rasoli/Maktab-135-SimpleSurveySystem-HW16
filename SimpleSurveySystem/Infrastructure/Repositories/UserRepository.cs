@@ -26,6 +26,11 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
             return user.Id.ToString();
         }
 
+        public bool CheckIfUserAlreadyParticipateInTheSurvey(int surveyId, int userId)
+        {
+            return _context.UserSurveyrs.Any(us => us.SurveyId == surveyId && us.UserId == userId);
+        }
+
         public bool CheckIfUserNameAlreadyExist(string userName)
         {
             return _context.Users.Any(u => u.Username.ToUpper() == userName.ToUpper());

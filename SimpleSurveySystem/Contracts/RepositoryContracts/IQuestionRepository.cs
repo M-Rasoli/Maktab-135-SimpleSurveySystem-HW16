@@ -11,5 +11,9 @@ namespace SimpleSurveySystem.Contracts.RepositoryContracts
     public interface IQuestionRepository
     {
         int AddNewQuestion(Question newQuestion);
+        List<ShowSurveyQuestionAndOptionsDto> GetOptionsOfQuestion(GetOptionsForQuestionWithPaginationDto getOptionsForQuestion);
+        string GetQuestionTitle(int questionId);
+        int GetFirstQuestionOfSurvey(int surveyId);
+        int GetLastQuestionOfSurvey(int surveyId);
     }
 }

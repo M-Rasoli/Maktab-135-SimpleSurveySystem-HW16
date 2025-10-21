@@ -10,6 +10,7 @@ namespace SimpleSurveySystem.Contracts.ServiceContracts
     public interface ISurveyService
     {
         List<ShowSurveysListDto> GetSurveysList();
+        List<ShowSurveysListDto> GetSurveysListForNormalUsers();
         List<ShowSurveysDetailWithIdDto> GetSurveyWithId(int surveyId);
         List<ShowParticipatingUsersDto> GetParticipatingUsersList(int surveyId);
         int CreateNewSurvey(string surveyTitle);
