@@ -24,14 +24,43 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
 
         }
 
+        public List<ShowSurveysDetailWithIdDto> GetSurveyWithId(int surveyId)
+        {
+            return _context.Surveys.AsNoTracking().Where(s => s.Id == surveyId)
+                .Select(x => new ShowSurveysDetailWithIdDto()
+                {
+                    SurveyId = x.Id,
+                    Title = x.Title,
+                    NumberParticipatingUsers = x.UserSurveys.Count,
+                    TotalVotes = x.Votes.Count
+
+                }).ToList();
+        }
+
         public List<ShowSurveysListDto> GetSurveysList()
         {
-            return _context.
+            return _context.Surveys.AsNoTracking().Select(x => new ShowSurveysListDto()
+            {
+                SurveyId = x.Id,
+                Title = x.Title,
+                NumberOfQuestions = x.Questions.Count,
+                TotalNumberOfVotes = x.Votes.Count
+            }).ToList();
         }
 
         public bool SurveyExist(int surveyId)
         {
             return _context.Surveys.Any(s => s.Id == surveyId);
+        }
+
+        public List<ShowParticipatingUsersDto> GetParticipatingUsersList(int surveyId)
+        {
+            return _context.UserSurveyrs.AsNoTracking().Where(us => us.SurveyId == surveyId)
+                .Select(x => new ShowParticipatingUsersDto()
+                {
+                    UserId = x.UserId,
+                    UserName = x.User.Username
+                }).ToList();
         }
     }
 }

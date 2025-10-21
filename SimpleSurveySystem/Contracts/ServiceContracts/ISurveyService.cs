@@ -1,20 +1,18 @@
-﻿using System;
+﻿using SimpleSurveySystem.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SimpleSurveySystem.DTOs;
-using SimpleSurveySystem.Entities;
 
-namespace SimpleSurveySystem.Contracts.RepositoryContracts
+namespace SimpleSurveySystem.Contracts.ServiceContracts
 {
-    public interface ISurveyRepository
+    public interface ISurveyService
     {
-        int CreateNewSurvey(CreateNewSurveyDto newSurvey);
-        bool SurveyExist(int surveyId);
         List<ShowSurveysListDto> GetSurveysList();
         List<ShowSurveysDetailWithIdDto> GetSurveyWithId(int surveyId);
         List<ShowParticipatingUsersDto> GetParticipatingUsersList(int surveyId);
-
+        int CreateNewSurvey(string surveyTitle);
+        bool SurveyExist(int surveyId);
     }
 }
