@@ -26,15 +26,33 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
 
         public List<ShowSurveysDetailWithIdDto> GetSurveyWithId(int surveyId)
         {
-            return _context.Surveys.AsNoTracking().Where(s => s.Id == surveyId)
-                .Select(x => new ShowSurveysDetailWithIdDto()
+            return _context.Surveys
+                .AsNoTracking()
+                .Where(s => s.Id == surveyId)
+                .Select(s => new ShowSurveysDetailWithIdDto
                 {
-                    SurveyId = x.Id,
-                    Title = x.Title,
-                    NumberParticipatingUsers = x.UserSurveys.Count,
-                    TotalVotes = x.Votes.Count
+                    SurveyId = s.Id,
+                    Title = s.Title,
+                    NumberParticipatingUsers = s.Votes
+                        .Select(v => v.UserId)
+                        .Distinct()
+                        .Count(),
+                    TotalVotes = s.Votes.Count()
+                })
+                .ToList();
 
-                }).ToList();
+            //return _context.Votes
+            //    .AsNoTracking()
+            //    .Where(v => v.SurveyId == surveyId)
+            //    .GroupBy(v => new { v.SurveyId, v.Survey.Title })
+            //    .Select(g => new ShowSurveysDetailWithIdDto
+            //    {
+            //        SurveyId = g.Key.SurveyId,
+            //        Title = g.Key.Title,
+            //        NumberParticipatingUsers = g.Select(v => v.UserId).Distinct().Count(),
+            //        TotalVotes = g.Count()
+            //    })
+            //    .ToList();
         }
 
         public List<ShowSurveysListDto> GetSurveysList()
@@ -55,12 +73,12 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
 
         public List<ShowParticipatingUsersDto> GetParticipatingUsersList(int surveyId)
         {
-            return _context.UserSurveyrs.AsNoTracking().Where(us => us.SurveyId == surveyId)
+            return _context.Votes.AsNoTracking().Where(us => us.SurveyId == surveyId)
                 .Select(x => new ShowParticipatingUsersDto()
                 {
                     UserId = x.UserId,
                     UserName = x.User.Username
-                }).ToList();
+                }).Distinct().ToList();
         }
 
         public List<ShowSurveysListDto> GetSurveysListForNormalUsers()
@@ -74,5 +92,6 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
                 TotalNumberOfVotes = x.Votes.Count
             }).ToList();
         }
+
     }
 }

@@ -18,12 +18,14 @@ IUserRepository userRepository = new UserRepository(appDbContext);
 ISurveyRepository surveyRepository = new SurveyRepository(appDbContext);
 IQuestionRepository questionRepository = new QuestionRepository(appDbContext);
 IVoteRepository voteRepository = new VoteRepository(appDbContext);
+IOptionRepository optionRepository = new OptionRepository(appDbContext);
 
 IAuthenticationService authenticationService = new AuthenticationService(userRepository);
 IQuestionService questionService = new QuestionService(questionRepository, surveyRepository);
 ISurveyService surveyService = new SurveyService(surveyRepository);
 IUserService userService = new UserService(userRepository);
 IVoteService voteService = new VoteService(voteRepository);
+IOptionService optionService = new OptionService(optionRepository);
 
 
 
@@ -251,12 +253,50 @@ void AdminMenu()
                 string inPutChoice = Console.ReadLine()!;
                 if (inPutChoice == "1")
                 {
-                    var articipatingUsersList = surveyService.GetParticipatingUsersList(inPutSurveyId);
-                    ConsolePainter.WriteTable(articipatingUsersList);
+                    var participatingUsersList = surveyService.GetParticipatingUsersList(inPutSurveyId);
+                    ConsolePainter.WriteTable(participatingUsersList);
                     Console.WriteLine("Press Any Key For Back");
                     Console.ReadKey();
                     break;
 
+                }
+                else if (inPutChoice == "2")
+                {
+                    int pageNumber = 1;
+                    int pageSize = 4;
+                    do
+                    {
+                        var showOptionsVotes = optionService.GetOptionsWithVotesDetail(inPutSurveyId, pageNumber, pageSize);
+                        ConsolePainter.WriteTable(showOptionsVotes);
+                        if (showOptionsVotes.Count == 0)
+                        {
+                            Console.WriteLine("There are no other questions.");
+                            Console.ReadKey();
+                            break;
+                        }
+                        Console.WriteLine("Press (n) Key For Next question (00 - for back)");
+                        string inPutQuestion = Console.ReadLine()!;
+                        if (inPutQuestion == "00")
+                        {
+                            break;
+                        }
+                        if (inPutQuestion == "n")
+                        {
+                            pageNumber++;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid Commend ");
+                            Console.ReadKey();
+                            break;
+                        } 
+
+                    } while (true);
+                    break;
+                }
+                else if (inPutChoice == "0")
+                {
+                    break;
                 }
                 Console.ReadKey();
                 break;
@@ -328,14 +368,27 @@ void UserMenu()
                     var showOptions = options.Select(o => new
                     {
                         OptionNumber = o.OptionNumber,
-                        Text = o.OptionText 
+                        Text = o.OptionText
                     }).ToList();
 
                     ConsolePainter.WriteTable(showOptions);
+                    int inPutOptionNumber;
+                    do
+                    {
+                        Console.Write("Enter Option Number for Voting : ");
+                        string inPutOptionNumberStr = Console.ReadLine()!;
+                        bool checkInPutOptionNum = int.TryParse(inPutOptionNumberStr, out inPutOptionNumber);
+                        if (inPutOptionNumber > 5 || inPutOptionNumber < 1)
+                        {
+                            Console.WriteLine("Invalid Option number");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            break;
+                        }
 
-                    Console.Write("Enter Option Number for Voting : ");
-                    string inPutOptionNumberStr = Console.ReadLine()!;
-                    bool checkInPutOptionNum = int.TryParse(inPutOptionNumberStr, out int inPutOptionNumber);
+                    } while (true);
 
                     var optionId = options.FirstOrDefault(o => o.OptionNumber == inPutOptionNumber).OptionId;
                     CreateVoteDto vote = new CreateVoteDto()
@@ -362,7 +415,7 @@ void UserMenu()
                     {
                         count++;
                     }
-                    
+
                     if (count > lastQuestionId)
                     {
                         Console.WriteLine("tnx for ur work");
