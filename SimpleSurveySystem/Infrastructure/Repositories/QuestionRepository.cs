@@ -35,6 +35,7 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
             return _context.Options.Where(o => o.QuestionId == getOptionsForQuestion.QuestionId)
                 .Select(x => new ShowSurveyQuestionAndOptionsDto
                 {
+                    OptionId = x.Id,
                     OptionNumber = x.OptionNumber,
                     OptionText = x.Text
                 }).ToList();

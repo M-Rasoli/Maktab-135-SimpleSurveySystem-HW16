@@ -28,7 +28,7 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
 
         public bool CheckIfUserAlreadyParticipateInTheSurvey(int surveyId, int userId)
         {
-            return _context.UserSurveyrs.Any(us => us.SurveyId == surveyId && us.UserId == userId);
+            return _context.Votes.Any(v => v.UserId == userId && v.SurveyId == surveyId);
         }
 
         public bool CheckIfUserNameAlreadyExist(string userName)

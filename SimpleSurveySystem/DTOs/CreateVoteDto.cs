@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace SimpleSurveySystem.DTOs
 {
-    public class ShowSurveyQuestionAndOptionsDto
+    public class CreateVoteDto
     {
         public int OptionId { get; set; }
-        public int OptionNumber { get; set; }
-        public string OptionText { get; set; }
+        public int QuestionId { get; set; }
+        public int SurveyId { get; set; }
+        public int UserId { get; set; }
     }
 }

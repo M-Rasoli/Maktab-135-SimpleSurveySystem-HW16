@@ -1,5 +1,4 @@
-﻿using System.Threading.Channels;
-using SimpleSurveySystem;
+﻿using SimpleSurveySystem;
 using SimpleSurveySystem.Contracts.RepositoryContracts;
 using SimpleSurveySystem.Contracts.ServiceContracts;
 using SimpleSurveySystem.DTOs;
@@ -9,6 +8,8 @@ using SimpleSurveySystem.Infrastructure;
 using SimpleSurveySystem.Infrastructure.Repositories;
 using SimpleSurveySystem.Services;
 using Spectre.Console;
+using System.Linq;
+using System.Threading.Channels;
 
 
 AppDbContext appDbContext = new AppDbContext();
@@ -16,11 +17,13 @@ AppDbContext appDbContext = new AppDbContext();
 IUserRepository userRepository = new UserRepository(appDbContext);
 ISurveyRepository surveyRepository = new SurveyRepository(appDbContext);
 IQuestionRepository questionRepository = new QuestionRepository(appDbContext);
+IVoteRepository voteRepository = new VoteRepository(appDbContext);
 
 IAuthenticationService authenticationService = new AuthenticationService(userRepository);
 IQuestionService questionService = new QuestionService(questionRepository, surveyRepository);
 ISurveyService surveyService = new SurveyService(surveyRepository);
 IUserService userService = new UserService(userRepository);
+IVoteService voteService = new VoteService(voteRepository);
 
 
 
@@ -322,14 +325,44 @@ void UserMenu()
                         QuestionId = count
                     };
                     var options = questionService.GetOptionsOfQuestion(getOptions);
-                    ConsolePainter.WriteTable(options);
-                    Console.WriteLine("Enter (n) for next page");
+                    var showOptions = options.Select(o => new
+                    {
+                        OptionNumber = o.OptionNumber,
+                        Text = o.OptionText 
+                    }).ToList();
+
+                    ConsolePainter.WriteTable(showOptions);
+
+                    Console.Write("Enter Option Number for Voting : ");
+                    string inPutOptionNumberStr = Console.ReadLine()!;
+                    bool checkInPutOptionNum = int.TryParse(inPutOptionNumberStr, out int inPutOptionNumber);
+
+                    var optionId = options.FirstOrDefault(o => o.OptionNumber == inPutOptionNumber).OptionId;
+                    CreateVoteDto vote = new CreateVoteDto()
+                    {
+                        OptionId = optionId,
+                        QuestionId = count,
+                        SurveyId = inPutSurveyId,
+                        UserId = Session.LoggedInUser.Id
+                    };
+                    try
+                    {
+                        var printNumber = voteService.CreateNewVote(vote);
+                        Console.WriteLine($"You just Chose OptionNumber {printNumber} !");
+                        Console.ReadKey();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.ReadKey();
+                    }
+                    Console.WriteLine("Enter (n) for next Question");
                     string inNext = Console.ReadLine()!;
                     if (inNext == "n")
                     {
                         count++;
                     }
-
+                    
                     if (count > lastQuestionId)
                     {
                         Console.WriteLine("tnx for ur work");
