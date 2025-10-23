@@ -56,6 +56,7 @@ namespace SimpleSurveySystem.Services
             {
                 UserName = userName,
                 Password = password,
+                Role = RoleEnum.NormalUSer
             };
             return _userRepository.AddNewUser(user);
         }

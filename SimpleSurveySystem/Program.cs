@@ -6,6 +6,7 @@ using SimpleSurveySystem.Enums;
 using SimpleSurveySystem.Extensions;
 using SimpleSurveySystem.Infrastructure;
 using SimpleSurveySystem.Infrastructure.Repositories;
+using SimpleSurveySystem.Migrations;
 using SimpleSurveySystem.Services;
 using Spectre.Console;
 using System.Linq;
@@ -268,13 +269,29 @@ void AdminMenu()
                     {
                         var showOptionsVotes = optionService.GetOptionsWithVotesDetail(inPutSurveyId, pageNumber, pageSize);
                         ConsolePainter.WriteTable(showOptionsVotes);
-                        AnsiConsole.Write(new BarChart()
+
+                        var barChart = new BarChart()
                             .Width(60)
-                            .Label("[green bold underline]Number of fruits[/]")
-                            .CenterLabel()
-                            .AddItem("Apple", 12, Color.Yellow)
-                            .AddItem("Orange", 54, Color.Green)
-                            .AddItem("Banana", 33, Color.Red));
+                            .Label("[green bold underline]Votes per Option[/]")
+                            .CenterLabel();
+
+                        foreach (var option in showOptionsVotes)
+                        {
+                            Color color = option.PercentageOfVotes > 40 ? Color.Green :
+                                option.PercentageOfVotes > 20 ? Color.Yellow : Color.Red;
+
+                           
+                            string label = $"{option.OptionText} ({option.PercentageOfVotes:F2}%)";
+                            double value = Math.Round(option.PercentageOfVotes, 2);
+
+                            barChart.AddItem(label, value, color);
+                        }
+
+                        
+                        barChart.AddItem("[grey]100%[/]", 100, Color.Grey);
+
+                        AnsiConsole.Write(barChart);
+
                         if (showOptionsVotes.Count == 0)
                         {
                             Console.WriteLine("There are no other questions.");
@@ -440,14 +457,14 @@ void UserMenu()
                     }
                     Console.WriteLine("Enter (n) for next Question");
                     string inNext = Console.ReadLine()!;
-                    if (inNext == "n")
+                    if (!string.IsNullOrEmpty(inNext) || inNext == "")
                     {
                         count++;
                     }
 
                     if (count > lastQuestionId)
                     {
-                        Console.WriteLine("tnx for ur work");
+                        Console.WriteLine("Thank you for your cooperation.");
                         Console.ReadKey();
                         break;
                     }
@@ -462,5 +479,22 @@ void UserMenu()
 
 void Register()
 {
-
+    Console.Clear();
+    var userName = AnsiConsole.Ask<string>("Enter your [green]USERNAME[/]:");
+    var password = AnsiConsole.Prompt(
+        new TextPrompt<string>("Enter your [green]PASSWORD[/]:")
+            .PromptStyle("red")
+            .Secret());
+    try
+    {
+        var id = authenticationService.Register(userName, password);
+        Console.WriteLine($"Registration was successful. Your ID {id} .");
+        Console.ReadKey();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        Console.ReadKey();
+        return;
+    }
 }

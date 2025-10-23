@@ -24,7 +24,7 @@ namespace SimpleSurveySystem.Infrastructure.Configurations
                 .HasForeignKey(q => q.SurveyId).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(s => s.Votes).WithOne(v => v.Survey)
-                .HasForeignKey(v => v.SurveyId).OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(v => v.SurveyId).OnDelete(DeleteBehavior.Restrict);
 
             builder.HasData(new List<Survey>()
             {

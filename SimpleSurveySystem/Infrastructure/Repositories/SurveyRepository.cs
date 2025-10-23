@@ -97,7 +97,15 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
         {
             var survey = _context.Surveys.FirstOrDefault(s => s.Id == surveyId);
             _context.Surveys.Remove(survey);
-            _context.SaveChanges();
+            //_context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+            }
             return survey.Id;
         }
 

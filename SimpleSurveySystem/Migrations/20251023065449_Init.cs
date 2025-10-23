@@ -89,7 +89,7 @@ namespace SimpleSurveySystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Option",
+                name: "Options",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -114,30 +114,35 @@ namespace SimpleSurveySystem.Migrations
                 name: "Votes",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OptionId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     QuestionId = table.Column<int>(type: "int", nullable: false),
-                    SurveyId = table.Column<int>(type: "int", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    SurveyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Votes", x => new { x.SurveyId, x.UserId, x.QuestionId, x.OptionId });
+                    table.PrimaryKey("PK_Votes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Votes_Options_OptionId",
                         column: x => x.OptionId,
-                        principalTable: "Option",
-                        principalColumn: "Id");
+                        principalTable: "Options",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Votes_Questions_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Questions",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Votes_Surveys_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Votes_Users_UserId",
                         column: x => x.UserId,
@@ -183,7 +188,7 @@ namespace SimpleSurveySystem.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Option",
+                table: "Options",
                 columns: new[] { "Id", "CreatedAt", "OptionNumber", "QuestionId", "Text" },
                 values: new object[,]
                 {
@@ -223,7 +228,7 @@ namespace SimpleSurveySystem.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Options_QuestionId",
-                table: "Option",
+                table: "Options",
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
@@ -247,6 +252,11 @@ namespace SimpleSurveySystem.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Votes_SurveyId",
+                table: "Votes",
+                column: "SurveyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Votes_UserId",
                 table: "Votes",
                 column: "UserId");
@@ -262,7 +272,7 @@ namespace SimpleSurveySystem.Migrations
                 name: "Votes");
 
             migrationBuilder.DropTable(
-                name: "Option");
+                name: "Options");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -49,7 +49,7 @@ namespace SimpleSurveySystem.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Option");
+                    b.ToTable("Options");
 
                     b.HasData(
                         new
@@ -527,26 +527,34 @@ namespace SimpleSurveySystem.Migrations
 
             modelBuilder.Entity("SimpleSurveySystem.Entities.Vote", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OptionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SurveyId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OptionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("SurveyId", "UserId", "QuestionId", "OptionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OptionId");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("SurveyId");
 
                     b.HasIndex("UserId");
 
@@ -556,7 +564,7 @@ namespace SimpleSurveySystem.Migrations
             modelBuilder.Entity("SimpleSurveySystem.Entities.Option", b =>
                 {
                     b.HasOne("SimpleSurveySystem.Entities.Question", "Question")
-                        .WithMany("Option")
+                        .WithMany("Options")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -599,19 +607,19 @@ namespace SimpleSurveySystem.Migrations
                     b.HasOne("SimpleSurveySystem.Entities.Option", "Option")
                         .WithMany("Votes")
                         .HasForeignKey("OptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SimpleSurveySystem.Entities.Question", "Question")
                         .WithMany("Votes")
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SimpleSurveySystem.Entities.Survey", "Survey")
                         .WithMany("Votes")
                         .HasForeignKey("SurveyId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SimpleSurveySystem.Entities.User", "User")
@@ -636,7 +644,7 @@ namespace SimpleSurveySystem.Migrations
 
             modelBuilder.Entity("SimpleSurveySystem.Entities.Question", b =>
                 {
-                    b.Navigation("Option");
+                    b.Navigation("Options");
 
                     b.Navigation("Votes");
                 });

@@ -8,6 +8,7 @@ namespace SimpleSurveySystem.Entities
 {
     public class Vote
     {
+        public int Id { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public Option Option { get; set; }
         public int OptionId { get; set; }

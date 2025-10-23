@@ -21,10 +21,10 @@ namespace SimpleSurveySystem.Infrastructure.Configurations
                 .HasForeignKey(o => o.QuestionId).OnDelete(DeleteBehavior.Cascade);
             
             builder.HasMany(q => q.Votes).WithOne(v => v.Question)
-                .HasForeignKey(v => v.QuestionId).OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(v => v.QuestionId).OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(q => q.Survey).WithMany(s => s.Questions)
-                .HasForeignKey(s => s.SurveyId).OnDelete(DeleteBehavior.NoAction);
+            //builder.HasOne(q => q.Survey).WithMany(s => s.Questions)
+            //    .HasForeignKey(s => s.SurveyId).OnDelete(DeleteBehavior.NoAction);
 
             builder.HasData(new List<Question>()
             {
