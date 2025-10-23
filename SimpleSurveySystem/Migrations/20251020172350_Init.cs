@@ -89,7 +89,7 @@ namespace SimpleSurveySystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Options",
+                name: "Option",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -126,7 +126,7 @@ namespace SimpleSurveySystem.Migrations
                     table.ForeignKey(
                         name: "FK_Votes_Options_OptionId",
                         column: x => x.OptionId,
-                        principalTable: "Options",
+                        principalTable: "Option",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Votes_Questions_QuestionId",
@@ -183,7 +183,7 @@ namespace SimpleSurveySystem.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Options",
+                table: "Option",
                 columns: new[] { "Id", "CreatedAt", "OptionNumber", "QuestionId", "Text" },
                 values: new object[,]
                 {
@@ -223,7 +223,7 @@ namespace SimpleSurveySystem.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Options_QuestionId",
-                table: "Options",
+                table: "Option",
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
@@ -262,7 +262,7 @@ namespace SimpleSurveySystem.Migrations
                 name: "Votes");
 
             migrationBuilder.DropTable(
-                name: "Options");
+                name: "Option");
 
             migrationBuilder.DropTable(
                 name: "Users");

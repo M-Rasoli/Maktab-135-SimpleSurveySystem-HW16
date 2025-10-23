@@ -9,7 +9,7 @@ namespace SimpleSurveySystem.Entities
     public class Vote
     {
         public DateTime CreateAt { get; set; } = DateTime.Now;
-        public Options Options { get; set; }
+        public Option Option { get; set; }
         public int OptionId { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }

@@ -28,7 +28,7 @@ namespace SimpleSurveySystem.Infrastructure
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<UserSurvey> UserSurveyrs { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<Options> Options { get; set; }
+        public DbSet<Option> Options { get; set; }
         public DbSet<Vote> Votes { get; set; }
     }
 }

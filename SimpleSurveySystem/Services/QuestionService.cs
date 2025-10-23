@@ -23,16 +23,16 @@ namespace SimpleSurveySystem.Services
                 SurveyId = newQuestion.SurveyId,
                 QuestionTitle = newQuestion.QuestionTitle,
                 Options = newQuestion.Options
-                    .Select(option => new Options()
+                    .Select(option => new Option()
                     {
                         OptionNumber = option.OptionNumber,
                         Text = option.Text
 
                     }).ToList()
             };
-            //foreach (var option in newQuestion.Options)
+            //foreach (var option in newQuestion.Option)
             //{
-            //    question.Options.Add(new Options()
+            //    question.Option.Add(new Option()
             //    {
             //        OptionNumber = option.OptionNumber,
             //        Text = option.Text

@@ -22,7 +22,7 @@ namespace SimpleSurveySystem.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SimpleSurveySystem.Entities.Options", b =>
+            modelBuilder.Entity("SimpleSurveySystem.Entities.Option", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace SimpleSurveySystem.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Options");
+                    b.ToTable("Option");
 
                     b.HasData(
                         new
@@ -553,10 +553,10 @@ namespace SimpleSurveySystem.Migrations
                     b.ToTable("Votes");
                 });
 
-            modelBuilder.Entity("SimpleSurveySystem.Entities.Options", b =>
+            modelBuilder.Entity("SimpleSurveySystem.Entities.Option", b =>
                 {
                     b.HasOne("SimpleSurveySystem.Entities.Question", "Question")
-                        .WithMany("Options")
+                        .WithMany("Option")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -596,7 +596,7 @@ namespace SimpleSurveySystem.Migrations
 
             modelBuilder.Entity("SimpleSurveySystem.Entities.Vote", b =>
                 {
-                    b.HasOne("SimpleSurveySystem.Entities.Options", "Options")
+                    b.HasOne("SimpleSurveySystem.Entities.Option", "Option")
                         .WithMany("Votes")
                         .HasForeignKey("OptionId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -620,7 +620,7 @@ namespace SimpleSurveySystem.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Options");
+                    b.Navigation("Option");
 
                     b.Navigation("Question");
 
@@ -629,14 +629,14 @@ namespace SimpleSurveySystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SimpleSurveySystem.Entities.Options", b =>
+            modelBuilder.Entity("SimpleSurveySystem.Entities.Option", b =>
                 {
                     b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("SimpleSurveySystem.Entities.Question", b =>
                 {
-                    b.Navigation("Options");
+                    b.Navigation("Option");
 
                     b.Navigation("Votes");
                 });

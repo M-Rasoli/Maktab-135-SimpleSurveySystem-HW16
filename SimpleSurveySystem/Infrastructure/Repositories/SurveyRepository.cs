@@ -93,5 +93,17 @@ namespace SimpleSurveySystem.Infrastructure.Repositories
             }).ToList();
         }
 
+        public int DeleteSurvey(int surveyId)
+        {
+            var survey = _context.Surveys.FirstOrDefault(s => s.Id == surveyId);
+            _context.Surveys.Remove(survey);
+            _context.SaveChanges();
+            return survey.Id;
+        }
+
+        public bool CheckIfSurveyHasVotes(int surveyId)
+        {
+            return _context.Votes.Any(v => v.SurveyId == surveyId);
+        }
     }
 }

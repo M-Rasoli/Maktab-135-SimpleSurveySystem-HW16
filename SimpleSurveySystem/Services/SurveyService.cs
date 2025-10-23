@@ -48,5 +48,24 @@ namespace SimpleSurveySystem.Services
         {
             return surveyRepository.GetSurveysListForNormalUsers();
         }
+
+        public int DeleteSurvey(int surveyId)
+        {
+            if (surveyRepository.SurveyExist(surveyId))
+            {
+                if (surveyRepository.CheckIfSurveyHasVotes(surveyId))
+                {
+                    return surveyRepository.DeleteSurvey(surveyId);
+                }
+                else
+                {
+                    throw new Exception("You cannot delete a survey that has no votes.");
+                }
+            }
+            else
+            {
+                throw new Exception("Invalid survey ID");
+            }
+        }
     }
 }

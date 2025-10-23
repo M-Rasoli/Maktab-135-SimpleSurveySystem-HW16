@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimpleSurveySystem.Entities
 {
-    public class Options
+    public class Option
     {
         public int Id { get; set; }
         public int OptionNumber { get; set; }

@@ -16,6 +16,7 @@ namespace SimpleSurveySystem.Contracts.RepositoryContracts
         List<ShowSurveysListDto> GetSurveysListForNormalUsers();
         List<ShowSurveysDetailWithIdDto> GetSurveyWithId(int surveyId);
         List<ShowParticipatingUsersDto> GetParticipatingUsersList(int surveyId);
-        
+        int DeleteSurvey(int surveyId);
+        bool CheckIfSurveyHasVotes(int surveyId);
     }
 }

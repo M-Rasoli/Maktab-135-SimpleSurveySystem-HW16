@@ -10,18 +10,18 @@ namespace SimpleSurveySystem.Entities
     {
         public int Id { get; set; }
         public string QuestionTitle { get; set; }
-        public List<Options> Options { get; set; } = new List<Options>();
+        public List<Option> Options { get; set; } = new List<Option>();
         public Survey Survey { get; set; }
         public int SurveyId { get; set; }
         public DateTime CreatedAt { get; set; } = new DateTime();
         public List<Vote> Votes { get; set; } = new List<Vote>();
 
 
-        //void SetOptions(List<Options> options)
+        //void SetOptions(List<Option> options)
         //{
         //    if (options.Count == 4)
         //    {
-        //        Options = options;
+        //        Option = options;
         //    }
         //}
     }

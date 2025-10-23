@@ -268,6 +268,13 @@ void AdminMenu()
                     {
                         var showOptionsVotes = optionService.GetOptionsWithVotesDetail(inPutSurveyId, pageNumber, pageSize);
                         ConsolePainter.WriteTable(showOptionsVotes);
+                        AnsiConsole.Write(new BarChart()
+                            .Width(60)
+                            .Label("[green bold underline]Number of fruits[/]")
+                            .CenterLabel()
+                            .AddItem("Apple", 12, Color.Yellow)
+                            .AddItem("Orange", 54, Color.Green)
+                            .AddItem("Banana", 33, Color.Red));
                         if (showOptionsVotes.Count == 0)
                         {
                             Console.WriteLine("There are no other questions.");
@@ -300,6 +307,28 @@ void AdminMenu()
                 }
                 Console.ReadKey();
                 break;
+            case "Delete Survey":
+                Console.Clear();
+                var surveysss = surveyService.GetSurveysList();
+                ConsolePainter.WriteTable(surveysss);
+                Console.Write("Enter Survey ID to Delete : (00-for back)");
+                string inPutSurveyRemoveStr = Console.ReadLine()!;
+                bool checkInSurveyDel = int.TryParse(inPutSurveyRemoveStr, out int surveyIdToRemove);
+                try
+                {
+                    var surveyId = surveyService.DeleteSurvey(surveyIdToRemove);
+                    Console.WriteLine($"Survey with Id {surveyId} Deleted successfully");
+                    Console.ReadKey();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.ReadKey();
+                    break;
+                }
+
+                break;
+
             case "Log Out":
                 return;
         }

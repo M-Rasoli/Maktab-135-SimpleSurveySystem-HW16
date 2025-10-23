@@ -15,5 +15,6 @@ namespace SimpleSurveySystem.Contracts.ServiceContracts
         List<ShowParticipatingUsersDto> GetParticipatingUsersList(int surveyId);
         int CreateNewSurvey(string surveyTitle);
         bool SurveyExist(int surveyId);
+        int DeleteSurvey(int surveyId);
     }
 }
